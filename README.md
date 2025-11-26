@@ -16,7 +16,7 @@ This project implements an **End-to-End MLOps pipeline** for a real-time fashion
 
 The system is designed with scalability in mind, fully containerized using Docker Compose.
 
-```text
+```mermaid
 graph LR
     U[User] -->|Natural Language Query| F["Frontend (Streamlit)"]
     F -->|REST API Request| B["Backend API (FastAPI)"]
