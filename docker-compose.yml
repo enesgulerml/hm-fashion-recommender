@@ -1,13 +1,64 @@
 version: '3.8'
 
 services:
-  # Vector Database (Qdrant)
+  # 1. DATABASE
   qdrant:
     image: qdrant/qdrant:latest
-    container_name: qdrant_db
+    container_name: hm_qdrant
     ports:
-      - "6333:6333" # API Portu
-      - "6334:6334" # GRPC Portu
+      - "6333:6333"
     volumes:
-      - ./qdrant_storage:/qdrant/storage # We write to disk (next to) to prevent data loss
+      - ./qdrant_storage:/qdrant/storage
     restart: always
+    networks:
+      - hm_network
+
+  # 2. DATA LOADER
+  etl:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: hm_etl_worker
+    command: python src/ingest_vectors.py
+    depends_on:
+      - qdrant
+    environment:
+      - QDRANT_HOST=qdrant
+    volumes:
+      - ./data:/app/data
+    networks:
+      - hm_network
+
+  # 3. BACKEND API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: hm_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - qdrant
+    environment:
+      - QDRANT_HOST=qdrant
+    networks:
+      - hm_network
+
+  # 4. FRONTEND
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: hm_ui
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    environment:
+      - API_URL=http://backend:8000/recommend
+    networks:
+      - hm_network
+
+networks:
+  hm_network:
+    driver: bridge

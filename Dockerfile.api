@@ -1,0 +1,15 @@
+# 1. Base Image: Slim Python (Linux)
+FROM python:3.10-slim
+
+# 2. Set working folder
+WORKDIR /app
+
+# 3. Copy and install requirements
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 4. Copy all source code
+COPY src/ ./src/
+
+# 5. Start API (Port 8000)
+CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

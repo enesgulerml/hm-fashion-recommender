@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Data & Storage
+data/
+qdrant_storage/
+mlruns/
+mlartifacts/
+
+# IDE
+.idea/
+.vscode/
