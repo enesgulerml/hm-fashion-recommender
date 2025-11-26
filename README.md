@@ -16,11 +16,11 @@ This project implements an **End-to-End MLOps pipeline** for a real-time fashion
 
 The system is designed with scalability in mind, fully containerized using Docker Compose.
 
-```mermaid
+```text
 graph LR
-    U[User] -->|Natural Language Query| F[Frontend (Streamlit)]
-    F -->|REST API Request| B[Backend API (FastAPI)]
-    B -->|Vector Search| Q[(Qdrant Vector DB)]
+    U[User] -->|Natural Language Query| F["Frontend (Streamlit)"]
+    F -->|REST API Request| B["Backend API (FastAPI)"]
+    B -->|Vector Search| Q[("Qdrant Vector DB")]
     Q -->|Top-K Candidates| B
     B -->|JSON Response| F
     F -->|Product Cards| U
