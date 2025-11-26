@@ -1,0 +1,14 @@
+# PyCharm Settings
+.idea/
+
+# Data Files
+data/
+*.csv
+*.parquet
+*.pkl
+
+# Python Junk
+__pycache__/
+venv/
+.env
+.DS_Store
