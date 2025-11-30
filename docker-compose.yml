@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # 1. DATABASE
+  # 1. DATABASE (Vector DB)
   qdrant:
     image: qdrant/qdrant:latest
     container_name: hm_qdrant
@@ -13,7 +13,19 @@ services:
     networks:
       - hm_network
 
-  # 2. DATA LOADER
+  # 2. REDIS (Caching Layer)
+  redis:
+    image: redis:alpine
+    container_name: hm_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_hm:/data
+    restart: always
+    networks:
+      - hm_network
+
+  # 3. DATA LOADER (ETL Worker)
   etl:
     build:
       context: .
@@ -29,7 +41,7 @@ services:
     networks:
       - hm_network
 
-  # 3. BACKEND API
+  # 4. BACKEND API (FastAPI)
   backend:
     build:
       context: .
@@ -39,12 +51,14 @@ services:
       - "8000:8000"
     depends_on:
       - qdrant
+      - redis  # Wait for Redis to start
     environment:
       - QDRANT_HOST=qdrant
+      - REDIS_HOST=redis  # Environment variable for Python to find Redis
     networks:
       - hm_network
 
-  # 4. FRONTEND
+  # 5. FRONTEND (Streamlit)
   frontend:
     build:
       context: .
@@ -58,6 +72,9 @@ services:
       - API_URL=http://backend:8000/recommend
     networks:
       - hm_network
+
+volumes:
+  redis_data_hm: # Persistence volume for Redis
 
 networks:
   hm_network:
