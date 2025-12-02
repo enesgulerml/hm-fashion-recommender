@@ -101,6 +101,26 @@ To run the tests locally:
 
 ✅ Error Handling: Ensures the API gracefully handles invalid inputs (e.g., missing parameters).
 
+## 📊 Monitoring & Observability
+
+To ensure high availability and performance reliability, this project implements a full observability stack using **Prometheus** and **Grafana**.
+
+### 🛠 Architecture
+- **Prometheus:** Scrapes real-time metrics (RPS, Latency, Memory Usage) from the FastAPI backend via `prometheus-fastapi-instrumentator`.
+- **Grafana:** Visualizes these metrics in interactive dashboards, allowing us to monitor the impact of Redis caching on inference speed.
+
+### 🔗 Access Points
+| Service | URL | Default Credentials | Description |
+|---------|-----|---------------------|-------------|
+| **Grafana Dashboard** | [http://localhost:3000](http://localhost:3000) | `admin` / `admin` | Real-time visualization of system metrics. |
+| **Prometheus UI** | [http://localhost:9090](http://localhost:9090) | N/A | Raw metric querying and target status. |
+| **API Metrics** | [http://localhost:8000/metrics](http://localhost:8000/metrics) | N/A | Raw metrics endpoint exposed by the application. |
+
+### 📈 Key Metrics to Watch
+1.  **Cache Hit vs. Miss Rate:** Demonstrates the efficiency of the Redis layer.
+2.  **P99 Latency:** Tracks the response time for the slowest 1% of requests (critical for SLA).
+3.  **Request Throughput:** Number of requests processed per second.
+
 ## 👨‍💻 Author
 Enes Guler - MLOps Engineer & Data Scientist
 
