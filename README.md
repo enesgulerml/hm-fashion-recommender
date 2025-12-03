@@ -91,8 +91,15 @@ To run the tests locally:
    ```bash
    docker-compose up -d
     ```
-2. Install dependencies (If not already installed):
+2. Using Conda (Recommended):
     ```bash
+    # Create a new environment
+    conda create -n hm-recsys-test python=3.10 -y
+
+    # Activate the environment
+    conda activate hm-recsys-test
+
+    # Install dependencies
     pip install -r requirements.txt
     ```
 3. Execute the test suite:
@@ -146,4 +153,4 @@ docker-compose down -v
 ## 👨‍💻 Author
 Enes Guler - MLOps Engineer & Data Scientist
 
-[LinkedIn](www.linkedin.com/in/enes-güler-8ab8a7346) | [Medium](https://medium.com/@ml.enesguler)
+[LinkedIn](in/enes-güler-8ab8a7346) | [Medium](https://medium.com/@ml.enesguler)
