@@ -123,6 +123,21 @@ To ensure high availability and performance reliability, this project implements
 | **Prometheus UI** | [http://localhost:9090](http://localhost:9090) | N/A | Raw metric querying and target status. |
 | **API Metrics** | [http://localhost:8000/metrics](http://localhost:8000/metrics) | N/A | Raw metrics endpoint exposed by the application. |
 
+---
+
+## 🛑 Stopping the System
+
+To stop the services while preserving the database and model registry data:
+```bash
+docker-compose down
+```
+
+To stop the services and remove all persistent data volumes (Reset everything to a clean state):
+
+```bash
+docker-compose down -v
+```
+
 ### 📈 Key Metrics to Watch
 1.  **Cache Hit vs. Miss Rate:** Demonstrates the efficiency of the Redis layer.
 2.  **P99 Latency:** Tracks the response time for the slowest 1% of requests (critical for SLA).
