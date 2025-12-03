@@ -55,6 +55,8 @@ services:
       context: .
       dockerfile: Dockerfile.api
     container_name: hm_etl_worker
+    # ⚠️ FIX: Run as root to access Windows-mounted volumes ./data without permission errors
+    user: root
     command: python src/ingest_vectors.py
     depends_on:
       - qdrant

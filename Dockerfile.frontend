@@ -3,20 +3,26 @@ FROM python:3.10-slim as builder
 
 WORKDIR /app
 
+# Install build tools
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Create virtual environment
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
+# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # --- STAGE 2: RUNTIME ---
 FROM python:3.10-slim as runtime
+
+# 1. SECURITY: Create a non-root group and user
+RUN groupadd -r hm_app && useradd -r -g hm_app hm_user
 
 WORKDIR /app
 
@@ -29,11 +35,17 @@ RUN apt-get update && apt-get install -y \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Pull libraries from Builder
+# Copy libraries from Builder
 COPY --from=builder /opt/venv /opt/venv
 
-# Pull source code
-COPY src/ ./src/
+# Copy source code
+COPY . .
+
+# 2. SECURITY: Change ownership to the non-root user
+RUN chown -R hm_user:hm_app /app
+
+# 3. SECURITY: Switch user
+USER hm_user
 
 # Start streamlit
 CMD ["streamlit", "run", "src/frontend/ui.py", "--server.port=8501", "--server.address=0.0.0.0"]

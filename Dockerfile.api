@@ -3,23 +3,23 @@ FROM python:3.10-slim as builder
 
 WORKDIR /app
 
-# Install the necessary system tools for compilation (gcc, python-dev etc.)
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Create virtual environment
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Install libraries
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # --- STAGE 2: RUNTIME ---
 FROM python:3.10-slim as runtime
+
+# 1. SECURITY: Create a non-root group and user
+RUN groupadd -r hm_app && useradd -r -g hm_app hm_user
 
 WORKDIR /app
 
@@ -28,16 +28,30 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Lightweight runtime libraries required for some ML libraries (XGBoost/Torch)
+# 👇 UPDATED SECTION: Set the correct Hugging Face Home 👇
+# We point HF_HOME to a directory we control (/app/models)
+ENV HF_HOME="/app/models"
+ENV SENTENCE_TRANSFORMERS_HOME="/app/models"
+
+# Lightweight runtime libraries
 RUN apt-get update && apt-get install -y \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy only compiled libraries from Builder
+# Copy compiled libraries
 COPY --from=builder /opt/venv /opt/venv
 
 # Copy source codes
-COPY src/ ./src/
+COPY . .
+
+# 👇 Create the directory and give permissions to hm_user 👇
+RUN mkdir -p /app/models && chown -R hm_user:hm_app /app
+
+# 2. SECURITY: Change ownership
+RUN chown -R hm_user:hm_app /app
+
+# 3. SECURITY: Switch user
+USER hm_user
 
 # Default command
 CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
