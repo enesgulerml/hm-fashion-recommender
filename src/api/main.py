@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 import os
 import redis
 import json
-from prometheus_fastapi_instrumentator import Instrumentator # <--- YENİ EKLENDİ
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # --- SETTINGS ---
 COLLECTION_NAME = "hm_items"
@@ -50,8 +50,7 @@ async def lifespan(app: FastAPI):
 # Create App
 app = FastAPI(title="H&M Fashion Recommender API", lifespan=lifespan)
 
-# --- MONITORING INSTRUMENTATION (YENİ EKLENDİ) ---
-# Bu satır sayesinde API metrikleri otomatik olarak /metrics adresinde yayınlanır
+# --- MONITORING INSTRUMENTATION ---
 Instrumentator().instrument(app).expose(app)
 # -------------------------------------------------
 
