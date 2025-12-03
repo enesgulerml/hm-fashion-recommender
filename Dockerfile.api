@@ -1,15 +1,43 @@
-# 1. Base Image: Slim Python (Linux)
-FROM python:3.10-slim
+# --- STAGE 1: BUILDER ---
+FROM python:3.10-slim as builder
 
-# 2. Set working folder
 WORKDIR /app
 
-# 3. Copy and install requirements
+# Install the necessary system tools for compilation (gcc, python-dev etc.)
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install libraries
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 4. Copy all source code
+# --- STAGE 2: RUNTIME ---
+FROM python:3.10-slim as runtime
+
+WORKDIR /app
+
+# Python optimizations
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Lightweight runtime libraries required for some ML libraries (XGBoost/Torch)
+RUN apt-get update && apt-get install -y \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy only compiled libraries from Builder
+COPY --from=builder /opt/venv /opt/venv
+
+# Copy source codes
 COPY src/ ./src/
 
-# 5. Start API (Port 8000)
+# Default command
 CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
