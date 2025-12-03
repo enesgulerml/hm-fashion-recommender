@@ -31,6 +31,13 @@ graph LR
 * qdrant: Vector Database storing 100K+ product embeddings for low-latency retrieval.
 * etl-worker: An automated service that runs on startup to ingest & embed data if the DB is empty.
 
+## 📂 Dataset Setup
+
+**Important:** Due to the large file size, the dataset is not included in this repository.
+
+1.  **Download:** Access the dataset from the [H&M Personalized Fashion Recommendations](https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data) page on Kaggle.
+2.  **Extract:** Unzip the downloaded files.
+3.  **Place:** Move the CSV files (`articles.csv`, `customers.csv`, `transactions_train.csv`) into the `data/raw/` directory.
 
 ## 🚀 Quick Start
 You don't need to install Python or libraries manually. Just use Docker.
