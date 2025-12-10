@@ -91,7 +91,7 @@ services:
       dockerfile: Dockerfile.frontend
     container_name: hm_ui
     ports:
-      - "8501:8501"
+      - "8502:8501"
     depends_on:
       - backend
     environment:
