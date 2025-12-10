@@ -74,7 +74,7 @@ services:
       dockerfile: Dockerfile.api
     container_name: hm_api
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       - qdrant
       - redis
