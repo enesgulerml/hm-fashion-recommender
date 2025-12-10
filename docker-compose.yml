@@ -18,7 +18,7 @@ services:
     image: redis:alpine
     container_name: hm_redis
     ports:
-      - "6379:6379"
+      - "6380:6379"
     volumes:
       - redis_data_hm:/data
     restart: always
