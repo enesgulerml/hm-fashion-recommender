@@ -54,7 +54,7 @@ cd hm-fashion-recommender
 # 2. Start the application (It initializes the DB automatically)
 docker-compose up --build
 ```
-Once the logs settle, open your browser: 👉 http://localhost:8501
+Once the logs settle, open your browser: 👉 http://localhost:8502
 
 ## 🛠️ Tech Stack & Engineering Decisions
 
@@ -124,11 +124,11 @@ To ensure high availability and performance reliability, this project implements
 - **Grafana:** Visualizes these metrics in interactive dashboards, allowing us to monitor the impact of Redis caching on inference speed.
 
 ### 🔗 Access Points
-| Service | URL | Default Credentials | Description |
-|---------|-----|---------------------|-------------|
-| **Grafana Dashboard** | [http://localhost:3000](http://localhost:3000) | `admin` / `admin` | Real-time visualization of system metrics. |
-| **Prometheus UI** | [http://localhost:9090](http://localhost:9090) | N/A | Raw metric querying and target status. |
-| **API Metrics** | [http://localhost:8000/metrics](http://localhost:8000/metrics) | N/A | Raw metrics endpoint exposed by the application. |
+| Service | URL                                                            | Default Credentials | Description |
+|---------|----------------------------------------------------------------|---------------------|-------------|
+| **Grafana Dashboard** | [http://localhost:3001](http://localhost:3001)                 | `admin` / `admin` | Real-time visualization of system metrics. |
+| **Prometheus UI** | [http://localhost:9091](http://localhost:9091)                 | N/A | Raw metric querying and target status. |
+| **API Metrics** | [http://localhost:8001/metrics](http://localhost:8001/metrics) | N/A | Raw metrics endpoint exposed by the application. |
 
 ---
 
