@@ -5,6 +5,7 @@
 ![Qdrant](https://img.shields.io/badge/Vector_DB-Qdrant-d50000?style=for-the-badge)
 ![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker)
 ![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 
 > **"I need a red dress for a summer wedding."** -> *Retrieves visually and semantically similar items in milliseconds.*
 
@@ -25,8 +26,12 @@ The system is designed with scalability in mind, fully containerized using Docke
 graph LR
     U[User] -->|Natural Language Query| F["Frontend (Streamlit)"]
     F -->|REST API Request| B["Backend API (FastAPI)"]
-    B -->|Vector Search| Q[("Qdrant Vector DB")]
+    
+    B -->|Check Cache| R[("Redis Cache")]
+    R -.->|Cache Hit| B
+    B -->|Cache Miss / Vector Search| Q[("Qdrant Vector DB")]
     Q -->|Top-K Candidates| B
+    
     B -->|JSON Response| F
     F -->|Product Cards| U
 ```
