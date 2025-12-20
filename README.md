@@ -10,6 +10,11 @@
 
 This project implements an **End-to-End MLOps pipeline** for a real-time fashion recommendation system. It leverages **Semantic Search** using tailored BERT embeddings and a **Vector Database (Qdrant)** to understand user intent beyond keyword matching.
 
+<p align="center">
+  <img src="docs/images/RECOMMENDATION_SYSTEM.gif" alt="Project Demo" width="700">
+</p>
+
+
 ---
 
 ## 🏗️ Architecture (Microservices)
