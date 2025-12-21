@@ -5,11 +5,11 @@ import os
 # --- SETTINGS ---
 # 1. Base URL'i alıyoruz (Sonunda /recommend OLMAMALI)
 # Docker'dan gelen: http://backend:8000
-API_BASE_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+API_URL = os.getenv("BACKEND_URL", "http://localhost:8001/recommend")
 
 # 2. Endpoint'i biz ekliyoruz (Garanti yöntem)
 ENDPOINT = "/recommend"
-FULL_API_URL = f"{API_BASE_URL}{ENDPOINT}"
+FULL_API_URL = f"{API_URL}{ENDPOINT}"
 
 # Page Configuration
 st.set_page_config(
