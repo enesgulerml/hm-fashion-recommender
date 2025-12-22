@@ -100,7 +100,7 @@ services:
     depends_on:
       - backend
     environment:
-      - BACKEND_URL=http://<http://3.126.31.207P>:8001/recommend
+      - BACKEND_URL=http://3.126.31.207:8001/recommend
     restart: always
     networks:
       - hm_network
