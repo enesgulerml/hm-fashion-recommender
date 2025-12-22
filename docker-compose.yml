@@ -100,7 +100,7 @@ services:
     depends_on:
       - backend
     environment:
-      - BACKEND_URL=${BACKEND_URL:-http://localhost:8001}
+      - BACKEND_URL=${BACKEND_URL:-http://backend:8000}
     restart: always
     networks:
       - hm_network
